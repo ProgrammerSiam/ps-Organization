@@ -3,10 +3,12 @@ import fs from "fs";
 import path from "path";
 import { DataTable } from "./data-table-components/data-table";
 import { columns } from "./data-table-components/columns";
+import { Button } from "@/components/ui/button";
+import { Plus, ChevronRight } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Expenses",
-  description: "A Expense tracker build using Tanstack Table.",
+  title: "Members & Invitations",
+  description: "Manage your team and invites in one place.",
 };
 
 async function getData() {
@@ -24,11 +26,29 @@ export default async function Page() {
   console.log("data", data);
 
   return (
-    <div className="h-full flex-1 flex-col space-y-2 p-8 md:flex">
+    <div className="h-full flex-1 flex-col space-y-4 p-8 md:flex">
+      {/* Breadcrumb Navigation */}
+      <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+        <span className="hover:text-foreground cursor-pointer">
+          Organization
+        </span>
+        <ChevronRight className="h-4 w-4" />
+        <span>Members</span>
+      </div>
+
       <div className="flex items-center justify-between">
-        <p className="text-muted-foreground">
-          Here&apos;s a list of your expenses for this month!
-        </p>
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">
+            Members & Invitations
+          </h1>
+          <p className="text-muted-foreground">
+            Manage your team and invites in one place.
+          </p>
+        </div>
+        <Button className="bg-green-600 hover:bg-green-700">
+          <Plus className="mr-2 h-4 w-4" />
+          Add Member
+        </Button>
       </div>
       <DataTable data={data} columns={columns} />
     </div>

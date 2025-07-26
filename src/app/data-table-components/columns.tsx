@@ -1,14 +1,15 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Expense } from "./schema";
+import { Member } from "./schema";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
-import { TrendingUp, TrendingDown } from "lucide-react";
+import { CheckCircle, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
 
-export const columns: ColumnDef<Expense>[] = [
+export const columns: ColumnDef<Member>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -34,117 +35,81 @@ export const columns: ColumnDef<Expense>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "label",
+    accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Label" />
+      <DataTableColumnHeader column={column} title="Name" />
     ),
     cell: ({ row }) => (
-      <div className="w-[150px] capitalize">{row.getValue("label")}</div>
+      <div className="font-medium">{row.getValue("name")}</div>
     ),
-    enableSorting: false,
+    enableSorting: true,
     enableHiding: false,
   },
   {
-    accessorKey: "note",
+    accessorKey: "email",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Note" />
+      <DataTableColumnHeader column={column} title="Email" />
     ),
-    cell: ({ row }) => {
-      return (
-        <div className="flex space-x-2">
-          <span className="max-w-[500px] truncate font-medium capitalize">
-            {row.getValue("note")}
-          </span>
-        </div>
-      );
-    },
+    cell: ({ row }) => (
+      <div className="text-muted-foreground">{row.getValue("email")}</div>
+    ),
+    enableSorting: true,
+    enableHiding: false,
   },
   {
-    accessorKey: "category",
+    accessorKey: "role",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Category" />
+      <DataTableColumnHeader column={column} title="Role" />
     ),
-    cell: ({ row }) => {
-      return (
-        <div className="flex w-[100px] items-center">
-          <span className="capitalize"> {row.getValue("category")}</span>
-        </div>
-      );
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
+    cell: ({ row }) => <div className="capitalize">{row.getValue("role")}</div>,
+    enableSorting: true,
+    enableHiding: false,
   },
   {
-    accessorKey: "type",
+    accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Type" />
+      <DataTableColumnHeader column={column} title="Status" />
     ),
     cell: ({ row }) => {
-      const type = row.getValue("type");
+      const status = row.getValue("status") as string;
       return (
-        <div className="flex w-[100px] items-center">
-          {type === "income" ? (
-            <TrendingUp size={20} className="mr-2 text-green-500" />
-          ) : (
-            <TrendingDown size={20} className="mr-2 text-red-500" />
-          )}
-          <span className="capitalize"> {row.getValue("type")}</span>
-        </div>
-      );
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
-  {
-    accessorKey: "amount",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Amount" />
-    ),
-    cell: ({ row }) => {
-      const type = row.getValue("type");
-      return (
-        <div className="flex w-[100px] items-center">
-          <span
+        <div className="flex items-center">
+          <Badge
+            variant="secondary"
             className={cn(
-              "capitalize",
-              type === "income" ? "text-green-500" : "text-red-500"
+              "flex items-center gap-1",
+              status === "Joined" ? "text-green-600" : "text-gray-600"
             )}
           >
-            {" "}
-            {row.getValue("amount")}
-          </span>
+            {status === "Joined" ? (
+              <CheckCircle className="h-3 w-3" />
+            ) : (
+              <Clock className="h-3 w-3" />
+            )}
+            {status}
+          </Badge>
         </div>
       );
     },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
+    enableSorting: true,
+    enableHiding: false,
   },
   {
     accessorKey: "date",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Date" />
+      <DataTableColumnHeader column={column} title="Date (Joined / Invited)" />
     ),
     cell: ({ row }) => {
       const date = new Date(row.getValue("date"));
       const formattedDate = date.toLocaleDateString("en-US", {
-        day: "2-digit",
-        month: "short",
+        month: "long",
+        day: "numeric",
         year: "numeric",
       });
-      return (
-        <div className="flex w-[100px] items-center">
-          <span className="capitalize">{formattedDate}</span>
-        </div>
-      );
+      return <div className="text-muted-foreground">{formattedDate}</div>;
     },
-    filterFn: (row, id, value) => {
-      const rowDate = new Date(row.getValue(id));
-      const [startDate, endDate] = value;
-      return rowDate >= startDate && rowDate <= endDate;
-    },
+    enableSorting: true,
+    enableHiding: false,
   },
   {
     id: "actions",

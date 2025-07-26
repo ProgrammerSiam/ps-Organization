@@ -1,4 +1,5 @@
 import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
+import { CheckCircle, Clock, Crown, User } from "lucide-react";
 
 export const categories = [
   {
@@ -53,5 +54,31 @@ export const incomeType = [
     label: "Expense",
     value: "expense",
     icon: ArrowDownIcon,
+  },
+];
+
+export const statuses = [
+  {
+    value: "Joined",
+    label: "Joined",
+    icon: CheckCircle,
+  },
+  {
+    value: "Pending",
+    label: "Pending",
+    icon: Clock,
+  },
+];
+
+export const roles = [
+  {
+    value: "Owner",
+    label: "Owner",
+    icon: Crown,
+  },
+  {
+    value: "Member",
+    label: "Member",
+    icon: User,
   },
 ];
