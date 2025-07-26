@@ -5,6 +5,7 @@ import { DataTable } from "./data-table-components/data-table";
 import { columns } from "./data-table-components/columns";
 import { Button } from "@/components/ui/button";
 import { Plus, ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Members & Invitations",
@@ -45,10 +46,17 @@ export default async function Page() {
             Manage your team and invites in one place.
           </p>
         </div>
-        <Button className="bg-green-600 hover:bg-green-700">
-          <Plus className="mr-2 h-4 w-4" />
-          Add Member
-        </Button>
+        <div className="flex space-x-2">
+          <Link href="/permissions" scroll={false}>
+            <Button variant="outline">Permissions</Button>
+          </Link>
+          <Link href="/invite-member" scroll={false}>
+            <Button className="bg-green-600 hover:bg-green-700">
+              <Plus className="mr-2 h-4 w-4" />
+              Add Member
+            </Button>
+          </Link>
+        </div>
       </div>
       <DataTable data={data} columns={columns} />
     </div>
