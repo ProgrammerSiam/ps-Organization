@@ -43,7 +43,7 @@ export function DataTableToolbar<TData>({
           onChange={(event) => {
             table.getColumn("name")?.setFilterValue(event.target.value);
           }}
-          className="h-8 w-[150px] lg:w-[250px]"
+          className="h-8 w-[150px] lg:w-[250px] "
         />
         {table.getColumn("status") && (
           <DataTableFacetedFilter
@@ -52,13 +52,13 @@ export function DataTableToolbar<TData>({
             options={statuses}
           />
         )}
-        {table.getColumn("role") && (
+        {/* {table.getColumn("role") && (
           <DataTableFacetedFilter
             column={table.getColumn("role")}
             title="Role"
             options={roles}
           />
-        )}
+        )} */}
         {isFiltered && (
           <Button
             variant="ghost"
@@ -134,7 +134,7 @@ export function DataTableToolbar<TData>({
             Delete ({table.getFilteredSelectedRowModel().rows.length})
           </Button>
         ) : null}
-        <DataTableViewOptions table={table} />
+        {/* <DataTableViewOptions table={table} /> */}
       </div>
     </div>
   );

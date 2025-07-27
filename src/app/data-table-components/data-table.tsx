@@ -68,7 +68,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4  flex flex-col justify-between gap-[12px] self-stretch rounded-[16px] bg-white p-[12px] shadow-[0_2px_5px_-2px_rgba(10,9,11,0.06),0_2px_7px_0_rgba(10,9,11,0.05),0_0_0_1px_rgba(10,9,11,0.05)]">
       <DataTableToolbar table={table} />
       <div className="overflow-y-auto rounded-lg border bg-white">
         <Table>
@@ -122,7 +122,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+      {/* <DataTablePagination table={table} /> */}
     </div>
   );
 }
