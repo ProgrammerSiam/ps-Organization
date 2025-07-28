@@ -69,7 +69,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="flex flex-col justify-between gap-[12px] self-stretch rounded-[16px] bg-white p-[12px] shadow-[0_2px_5px_-2px_rgba(10,9,11,0.06),0_2px_7px_0_rgba(10,9,11,0.05),0_0_0_1px_rgba(10,9,11,0.05)]">
-      <div className="py-[12px]">
+      <div className="pt-[12px] pb-[2px]">
         <DataTableToolbar table={table} />
       </div>
       <div className="overflow-y-auto rounded-lg border bg-white">
