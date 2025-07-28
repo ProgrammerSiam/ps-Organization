@@ -3,8 +3,7 @@ import fs from "fs";
 import path from "path";
 import { DataTable } from "./data-table-components/data-table";
 import { columns } from "./data-table-components/columns";
-import { Button } from "@/components/ui/button";
-import { Plus, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 export const metadata: Metadata = {

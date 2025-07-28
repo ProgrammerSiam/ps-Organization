@@ -1,15 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import {
-  FolderIcon,
-  FolderOpen,
-  Search,
-  Filter,
-  List,
-  Check,
-  X,
-} from "lucide-react";
+import { Check } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -316,21 +308,6 @@ export default function FolderPermissionsModal({
               // Check if this is a parent with visible children
               const isParentWithVisibleChildren = hasChildren && isExpanded;
 
-              // Check if this is the last child of its parent
-              const isLastChild = (() => {
-                if (folder.level === 0) return false;
-
-                const currentParent = folder.parentId;
-                for (let i = index + 1; i < filteredFolders.length; i++) {
-                  const nextItem = filteredFolders[i];
-                  if (nextItem.parentId === currentParent) {
-                    return false; // There's another sibling
-                  }
-                  if (nextItem.level < folder.level) break; // We've moved up a level
-                }
-                return true; // This is the last child
-              })();
-
               // Check if this is the last visible child of its parent
               const isLastVisibleChild = (() => {
                 if (folder.level === 0) return false;
@@ -359,18 +336,6 @@ export default function FolderPermissionsModal({
                   if (prevItem.level < folder.level) break; // We've moved up a level
                 }
                 return true; // This is the first child
-              })();
-
-              // Check if this item has visible children below it
-              const hasVisibleChildrenBelow = (() => {
-                if (!hasChildren || !isExpanded) return false;
-
-                for (let i = index + 1; i < filteredFolders.length; i++) {
-                  const nextItem = filteredFolders[i];
-                  if (nextItem.level <= folder.level) break; // We've moved up or to same level
-                  if (nextItem.parentId === folder.id) return true; // Found a direct child
-                }
-                return false;
               })();
 
               // Check if this is a middle child (not first, not last)

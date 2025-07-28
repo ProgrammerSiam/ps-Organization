@@ -5,37 +5,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-  DialogClose,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  ChevronLeft,
-  X,
-  ChevronUpIcon,
-  ChevronDownIcon,
-  HomeIcon,
-  RadioIcon,
-  CirclePlayIcon,
-  SettingsIcon,
-  BarChartIcon,
-  RotateCcwIcon,
-  ShieldIcon,
-} from "lucide-react";
+import { ChevronUpIcon, ChevronDownIcon } from "lucide-react";
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import FolderPermissionsModal from "@/components/comp-567";
 
@@ -60,7 +38,6 @@ interface LibraryPermissions {
 export default function InviteMemberModal() {
   const router = useRouter();
   const [tab, setTab] = useState("library");
-  const [permission, setPermission] = useState("view");
   const [libraries, setLibraries] = useState<LibraryPermissions[]>([
     {
       id: "nova-insights",

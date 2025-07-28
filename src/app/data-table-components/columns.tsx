@@ -3,10 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Member } from "./schema";
 import { DataTableColumnHeader } from "./data-table-column-header";
-import { DataTableRowActions } from "./data-table-row-actions";
-import { CheckCircle, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 
 export const columns: ColumnDef<Member>[] = [

@@ -7,10 +7,15 @@ import { Slot } from "radix-ui";
 
 import { cn } from "@/lib/utils";
 
-interface TreeContextValue<T = any> {
+interface TreeObject {
+  getContainerProps?: () => Record<string, unknown>;
+  getDragLineStyle?: () => React.CSSProperties;
+}
+
+interface TreeContextValue {
   indent: number;
-  currentItem?: ItemInstance<T>;
-  tree?: any;
+  currentItem?: ItemInstance<unknown>;
+  tree?: TreeObject;
 }
 
 const TreeContext = React.createContext<TreeContextValue>({
@@ -19,13 +24,13 @@ const TreeContext = React.createContext<TreeContextValue>({
   tree: undefined,
 });
 
-function useTreeContext<T = any>() {
-  return React.useContext(TreeContext) as TreeContextValue<T>;
+function useTreeContext() {
+  return React.useContext(TreeContext);
 }
 
 interface TreeProps extends React.HTMLAttributes<HTMLDivElement> {
   indent?: number;
-  tree?: any;
+  tree?: TreeObject;
 }
 
 function Tree({ indent = 20, tree, className, ...props }: TreeProps) {
@@ -56,21 +61,21 @@ function Tree({ indent = 20, tree, className, ...props }: TreeProps) {
   );
 }
 
-interface TreeItemProps<T = any>
+interface TreeItemProps<T = unknown>
   extends React.HTMLAttributes<HTMLButtonElement> {
   item: ItemInstance<T>;
   indent?: number;
   asChild?: boolean;
 }
 
-function TreeItem<T = any>({
+function TreeItem<T = unknown>({
   item,
   className,
   asChild,
   children,
   ...props
 }: Omit<TreeItemProps<T>, "indent">) {
-  const { indent } = useTreeContext<T>();
+  const { indent } = useTreeContext();
 
   const itemProps = typeof item.getProps === "function" ? item.getProps() : {};
   const mergedProps = { ...props, ...itemProps };
@@ -87,7 +92,9 @@ function TreeItem<T = any>({
   const Comp = asChild ? Slot.Root : "button";
 
   return (
-    <TreeContext.Provider value={{ indent, currentItem: item }}>
+    <TreeContext.Provider
+      value={{ indent, currentItem: item as ItemInstance<unknown> }}
+    >
       <Comp
         data-slot="tree-item"
         style={mergedStyle}
@@ -129,19 +136,19 @@ function TreeItem<T = any>({
   );
 }
 
-interface TreeItemLabelProps<T = any>
+interface TreeItemLabelProps<T = unknown>
   extends React.HTMLAttributes<HTMLSpanElement> {
   item?: ItemInstance<T>;
 }
 
-function TreeItemLabel<T = any>({
+function TreeItemLabel<T = unknown>({
   item: propItem,
   children,
   className,
   ...props
 }: TreeItemLabelProps<T>) {
-  const { currentItem } = useTreeContext<T>();
-  const item = propItem || currentItem;
+  const { currentItem } = useTreeContext();
+  const item = propItem || (currentItem as ItemInstance<T>);
 
   if (!item) {
     console.warn("TreeItemLabel: No item provided via props or context");
