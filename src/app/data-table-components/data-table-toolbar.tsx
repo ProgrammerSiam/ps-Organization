@@ -5,12 +5,10 @@ import { Table } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { statuses, roles } from "./data";
+import { statuses } from "./data";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-// import { DataTableViewOptions } from "@/components/ui/data-table-view-options";
 import { CalendarDatePicker } from "@/components/calendar-date-picker";
 import { useState } from "react";
-import { DataTableViewOptions } from "./data-table-view-options";
 import { TrashIcon, ArrowUpDown } from "lucide-react";
 
 interface DataTableToolbarProps<TData> {

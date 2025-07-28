@@ -8,8 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import {
   ChevronUpIcon,
   ChevronDownIcon,
-  CheckIcon,
-  PlayIcon,
   RadioIcon,
   CirclePlayIcon,
   SettingsIcon,

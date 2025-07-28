@@ -3,8 +3,7 @@ import fs from "fs";
 import path from "path";
 import { DataTable } from "./data-table-components/data-table";
 import { columns } from "./data-table-components/columns";
-import { Button } from "@/components/ui/button";
-import { Plus, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -27,7 +26,9 @@ export default async function Page() {
   console.log("data", data);
 
   return (
+
     <div className="h-full w-full sm:max-w-[1140px] mx-auto flex-1 flex-col space-y-[32px] p-4 sm:p-8 md:flex ">
+
       {/* Breadcrumb Navigation */}
       <div className="flex flex-wrap gap-2 items-center justify-between space-x-2 text-sm text-muted-foreground px-[20px] sm:px-[40px] h-[40px]">
         <div className="flex items-center space-x-2">
@@ -62,8 +63,10 @@ export default async function Page() {
         </Link>
       </div>
 
+
       <div className="rounded-[20px] border border-[#E9EAEB] bg-[#FAFAFA] p-[4px] ">
         <div className=" justify-between flex flex-col items-start gap-[2px] px-[20px] py-[8px] pb-[14px] self-stretch">
+
           <div>
             <h1 className="text-[#2B2B2B] font-semibold text-[18px] leading-[28px] font-label">
               Members & Invitations
@@ -72,14 +75,6 @@ export default async function Page() {
               Manage your team and invites in one place.
             </p>
           </div>
-          {/* <div className="flex space-x-2">
-            <Link href="/permissions" scroll={false}>
-              <Button variant="outline">Permissions</Button>
-            </Link>
-            <Link href="/folder-permissions-demo" scroll={false}>
-              <Button variant="outline">Folder Permissions Demo</Button>
-            </Link>
-          </div> */}
         </div>
         <div className="">
           <DataTable data={data} columns={columns} />
