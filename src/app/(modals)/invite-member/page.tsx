@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import FolderPermissionsModal from "@/components/comp-567";
+import Link from "next/link";
 
 // Define PermissionItem and LibraryPermissions types
 interface PermissionItem {
@@ -345,23 +346,25 @@ export default function InviteMemberModal() {
 
   return (
     <Dialog open onOpenChange={() => router.back()}>
-      <DialogContent className=" max-w-full h-screen">
+      <DialogContent className="max-w-full h-screen mt-10">
         <div className="flex items-center gap-[12px]">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            className="cursor-pointer flex items-center justify-center w-[30px] h-[30px] gap-[10px] rounded-[6px] border border-[#E9EAEB] bg-white shadow-[0_1.5px_4px_-1px_rgba(10,9,11,0.07)] p-[7px]"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M7.0203 3.64645C7.21556 3.84171 7.21556 4.15829 7.0203 4.35355L3.87385 7.5H13.3334C13.6096 7.5 13.8334 7.72386 13.8334 8C13.8334 8.27614 13.6096 8.5 13.3334 8.5H3.87385L7.0203 11.6464C7.21556 11.8417 7.21556 12.1583 7.0203 12.3536C6.82504 12.5488 6.50846 12.5488 6.31319 12.3536L2.31319 8.35355C2.11793 8.15829 2.11793 7.84171 2.31319 7.64645L6.31319 3.64645C6.50846 3.45118 6.82504 3.45118 7.0203 3.64645Z"
-              fill="#2B2B2B"
-            />
-          </svg>
+          <Link href="/">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              className="cursor-pointer flex items-center justify-center w-[30px] h-[30px] gap-[10px] rounded-[6px] border border-[#E9EAEB] bg-white shadow-[0_1.5px_4px_-1px_rgba(10,9,11,0.07)] p-[7px]"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M7.0203 3.64645C7.21556 3.84171 7.21556 4.15829 7.0203 4.35355L3.87385 7.5H13.3334C13.6096 7.5 13.8334 7.72386 13.8334 8C13.8334 8.27614 13.6096 8.5 13.3334 8.5H3.87385L7.0203 11.6464C7.21556 11.8417 7.21556 12.1583 7.0203 12.3536C6.82504 12.5488 6.50846 12.5488 6.31319 12.3536L2.31319 8.35355C2.11793 8.15829 2.11793 7.84171 2.31319 7.64645L6.31319 3.64645C6.50846 3.45118 6.82504 3.45118 7.0203 3.64645Z"
+                fill="#2B2B2B"
+              />
+            </svg>
+          </Link>
           <span className="text-[#2B2B2B] font-semibold text-base leading-6">
             Invite Member
           </span>
@@ -408,25 +411,25 @@ export default function InviteMemberModal() {
                 onValueChange={setTab}
                 className="  rounded-[16px] bg-white shadow-[0_2px_5px_-2px_rgba(10,9,11,0.06),0_2px_7px_0_rgba(10,9,11,0.05),0_0_0_1px_rgba(10,9,11,0.05)] flex flex-col justify-end items-start gap-0 self-stretch px-[18px] py-[24px]"
               >
-                <TabsList className="bg-gray-100 rounded-lg p-0 border border-gray-200">
+                <TabsList className="bg-gray-100 rounded-lg p-0 border border-gray-200 w-full flex sm:w-96 flex-wrap sm:flex-nowrap">
                   <TabsTrigger
                     value="library"
-                    className="data-[state=active]:bg-white 
-                     data-[state=active]:text-[#2B2B2B] data-[state=active]:font-medium data-[state=active]:leading-[20px] data-[state=active]:tracking-[-0.28px] data-[state=inactive]:text-[#818181] data-[state=inactive]:font-medium data-[state=inactive]:leading-[20px] data-[state=inactive]:tracking-[-0.28px]  rounded-md px-4 py-2 transition-all duration-200"
+                    className="data-[state=active]:bg-white  
+                     data-[state=active]:text-[#2B2B2B] data-[state=active]:font-medium data-[state=active]:leading-[20px] data-[state=active]:tracking-[-0.28px] data-[state=inactive]:text-[#818181] data-[state=inactive]:font-medium data-[state=inactive]:leading-[20px] data-[state=inactive]:tracking-[-0.28px] rounded-md px-2 sm:px-4 py-2 transition-all duration-200 flex-1 min-w-0 text-xs sm:text-sm"
                   >
                     Library
                   </TabsTrigger>
                   <TabsTrigger
                     value="distribution"
-                    className="data-[state=active]:bg-white 
-                     data-[state=active]:text-[#2B2B2B] data-[state=active]:font-medium data-[state=active]:leading-[20px] data-[state=active]:tracking-[-0.28px] data-[state=inactive]:text-[#818181] data-[state=inactive]:font-medium data-[state=inactive]:leading-[20px] data-[state=inactive]:tracking-[-0.28px]  rounded-md px-4 py-2 transition-all duration-200"
+                    className="data-[state=active]:bg-white
+                     data-[state=active]:text-[#2B2B2B] data-[state=active]:font-medium data-[state=active]:leading-[20px] data-[state=active]:tracking-[-0.28px] data-[state=inactive]:text-[#818181] data-[state=inactive]:font-medium data-[state=inactive]:leading-[20px] data-[state=inactive]:tracking-[-0.28px] rounded-md px-2 sm:px-4 py-2 transition-all duration-200 flex-1 min-w-0 text-xs sm:text-sm"
                   >
                     Distribution
                   </TabsTrigger>
                   <TabsTrigger
                     value="organization"
                     className="data-[state=active]:bg-white 
-                     data-[state=active]:text-[#2B2B2B] data-[state=active]:font-medium data-[state=active]:leading-[20px] data-[state=active]:tracking-[-0.28px] data-[state=inactive]:text-[#818181] data-[state=inactive]:font-medium data-[state=inactive]:leading-[20px] data-[state=inactive]:tracking-[-0.28px]  rounded-md px-4 py-2 transition-all duration-200"
+                     data-[state=active]:text-[#2B2B2B] data-[state=active]:font-medium data-[state=active]:leading-[20px] data-[state=active]:tracking-[-0.28px] data-[state=inactive]:text-[#818181] data-[state=inactive]:font-medium data-[state=inactive]:leading-[20px] data-[state=inactive]:tracking-[-0.28px] rounded-md px-2 sm:px-4 py-2 transition-all duration-200 flex-1 min-w-0 text-xs sm:text-sm"
                   >
                     Organization
                   </TabsTrigger>
@@ -438,7 +441,7 @@ export default function InviteMemberModal() {
                       <h2 className="overflow-hidden text-[#2B2B2B] text-ellipsis whitespace-nowrap text-[14px] font-semibold leading-[20px] tracking-[-0.28px]">
                         What invitee can do?
                       </h2>
-                      <div className="flex space-x-6">
+                      <div className="flex flex-wrap gap-2">
                         {(
                           ["View", "View and Edit", "Edit and Delete"] as const
                         ).map((level) => (
@@ -558,22 +561,25 @@ export default function InviteMemberModal() {
                                                     <div className="text-[#2B2B2B] font-medium text-sm leading-[20px] tracking-[-0.28px] flex items-center gap-2">
                                                       {permission.name}
                                                     </div>
-                                                    <div className="flex items-center gap-1">
+                                                    <div className="flex items-center gap-2">
                                                       <div className="text-[#818181] font-normal text-xs leading-[18px]  line-clamp-1">
                                                         {permission.description}
                                                       </div>
                                                       {permission.id ===
                                                         "videos" && (
-                                                        <span
-                                                          className="text-[#04A57D] font-normal text-xs leading-[18px] hover:underline cursor-pointer truncate"
-                                                          onClick={() =>
-                                                            setIsFolderPermissionsOpen(
-                                                              true
-                                                            )
-                                                          }
-                                                        >
-                                                          Change
-                                                        </span>
+                                                        <>
+                                                          <div className="w-1 h-1 bg-[#ADADAD] rounded-full"></div>
+                                                          <span
+                                                            className="text-[#04A57D] font-normal text-xs leading-[18px] hover:underline cursor-pointer truncate"
+                                                            onClick={() =>
+                                                              setIsFolderPermissionsOpen(
+                                                                true
+                                                              )
+                                                            }
+                                                          >
+                                                            Change
+                                                          </span>
+                                                        </>
                                                       )}
                                                     </div>
                                                   </div>
@@ -581,7 +587,7 @@ export default function InviteMemberModal() {
                                                 <div className="flex items-center justify-end min-w-[44px]">
                                                   <div
                                                     className={cn(
-                                                      "w-11 h-6 rounded-full transition-colors duration-200 ease-in-out cursor-pointer relative border border-[#E9EAEB]",
+                                                      "w-11 h-6 rounded-full transition-colors duration-200 ease-in-out cursor-pointer relative border border-[#E9EAEB] flex items-center",
                                                       permission.enabled
                                                         ? "bg-[#04A57D]"
                                                         : "bg-[#E9EAEB]"
@@ -595,10 +601,10 @@ export default function InviteMemberModal() {
                                                   >
                                                     <div
                                                       className={cn(
-                                                        "absolute w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out -top-0.2 border border-[#E9EAEB]",
+                                                        "absolute w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out border border-[#E9EAEB]",
                                                         permission.enabled
-                                                          ? "translate-x-6"
-                                                          : "translate-x-0"
+                                                          ? "translate-x-5"
+                                                          : "translate-x-0.5"
                                                       )}
                                                     />
                                                   </div>
@@ -616,16 +622,6 @@ export default function InviteMemberModal() {
                         ))}
                       </div>
                     </div>
-                  </div>
-                </TabsContent>
-                <TabsContent value="distribution">
-                  <div className="text-muted-foreground">
-                    Distribution permissions coming soon.
-                  </div>
-                </TabsContent>
-                <TabsContent value="organization">
-                  <div className="text-muted-foreground">
-                    Organization permissions coming soon.
                   </div>
                 </TabsContent>
               </Tabs>
