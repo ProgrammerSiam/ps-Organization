@@ -148,7 +148,7 @@ export default function FolderPermissionsModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md p-0">
+      <DialogContent className="max-w-md p-0 ">
         <DialogHeader className="px-6 pt-6 pb-4">
           <div className="flex items-start justify-between">
             <div className="flex-1">
@@ -166,10 +166,10 @@ export default function FolderPermissionsModal({
         {selectedCount > 0 && (
           <div className="mx-6 mb-4">
             <div className="flex items-center gap-2 text-sm text-green-600">
-              <div className="w-4 h-4 bg-green-600 rounded flex items-center justify-center">
+              <div className="w-4 h-4 bg-[#04A57D] rounded flex items-center justify-center">
                 <Check className="h-3 w-3 text-white" />
               </div>
-              <span className="font-medium">
+              <span className="overflow-hidden text-[#2B2B2B] text-sm font-normal leading-[20px] tracking-[-0.14px]  truncate">
                 {selectedCount} Folder{selectedCount !== 1 ? "s" : ""} Selected
               </span>
             </div>
@@ -408,19 +408,18 @@ export default function FolderPermissionsModal({
         {/* Action buttons */}
         <div className="px-6 pb-6">
           <div className="flex justify-end gap-3">
-            <Button
-              variant="outline"
+            <button
               onClick={() => onOpenChange(false)}
-              className="border-gray-300 text-gray-700 hover:bg-gray-50"
+              className="flex h-9 px-3 justify-center text-[#2B2B2B] text-sm font-medium leading-5 tracking-[-0.028em] items-center gap-2 rounded-md bg-[#F5F5F5] cursor-pointer hover:bg-gray-50"
             >
               Cancel
-            </Button>
-            <Button
-              className="bg-green-600 hover:bg-green-700 text-white"
+            </button>
+            <button
+              className="flex h-9 px-[17px] justify-center items-center gap-2 rounded-md bg-[#04A57D] shadow-[inset_1px_1px_1px_rgba(255,255,255,0.25),inset_-1px_-1px_1px_rgba(0,0,0,0.15),0_1.5px_4px_-1px_rgba(10,9,11,0.07)] text-white font-medium text-sm leading-[20px] tracking-[-0.28px] cursor-pointer"
               onClick={() => onOpenChange(false)}
             >
               Done
-            </Button>
+            </button>
           </div>
         </div>
       </DialogContent>
