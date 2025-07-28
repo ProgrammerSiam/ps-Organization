@@ -73,14 +73,6 @@ export default async function Page() {
               Manage your team and invites in one place.
             </p>
           </div>
-          {/* <div className="flex space-x-2">
-            <Link href="/permissions" scroll={false}>
-              <Button variant="outline">Permissions</Button>
-            </Link>
-            <Link href="/folder-permissions-demo" scroll={false}>
-              <Button variant="outline">Folder Permissions Demo</Button>
-            </Link>
-          </div> */}
         </div>
         <div className="">
           <DataTable data={data} columns={columns} />

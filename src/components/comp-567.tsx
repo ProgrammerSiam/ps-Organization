@@ -181,14 +181,23 @@ export default function FolderPermissionsModal({
         </DialogHeader>
 
         {/* Selected count indicator */}
-        {selectedCount > 0 && (
+        {selectedCount > 0 ? (
           <div className="mx-6 mb-4">
-            <div className="flex items-center gap-2 text-sm text-green-600">
+            <div className="flex items-center gap-2 text-sm">
               <div className="w-4 h-4 bg-[#04A57D] rounded flex items-center justify-center">
                 <Check className="h-3 w-3 text-white" />
               </div>
-              <span className="overflow-hidden text-[#2B2B2B] text-sm font-normal leading-[20px] tracking-[-0.14px]  truncate">
+              <span className="overflow-hidden text-[#2B2B2B] text-sm font-normal leading-[20px] tracking-[-0.14px] truncate">
                 {selectedCount} Folder{selectedCount !== 1 ? "s" : ""} Selected
+              </span>
+            </div>
+          </div>
+        ) : (
+          <div className="mx-6 mb-4">
+            <div className="flex items-center gap-2 text-sm">
+              <div className="w-4 h-4 border border-gray-300 rounded bg-white"></div>
+              <span className="text-[#2B2B2B] text-sm font-normal leading-[20px] tracking-[-0.14px]">
+                No Folder Selected
               </span>
             </div>
           </div>
