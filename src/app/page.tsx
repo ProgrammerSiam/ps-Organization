@@ -27,9 +27,9 @@ export default async function Page() {
   console.log("data", data);
 
   return (
-    <div className="h-full max-w-[1140px] mx-auto flex-1 flex-col space-y-[32px] p-8 md:flex ">
+    <div className="h-full w-full sm:max-w-[1140px] mx-auto flex-1 flex-col space-y-[32px] p-4 sm:p-8 md:flex ">
       {/* Breadcrumb Navigation */}
-      <div className="flex items-center justify-between space-x-2 text-sm text-muted-foreground px-[40px]">
+      <div className="flex flex-wrap gap-2 items-center justify-between space-x-2 text-sm text-muted-foreground px-[20px] sm:px-[40px] h-[40px]">
         <div className="flex items-center space-x-2">
           <span className="text-[#818181] text-[14px] leading-[20px] font-normal tracking-[-0.014em] hover:text-foreground cursor-pointer">
             Organization

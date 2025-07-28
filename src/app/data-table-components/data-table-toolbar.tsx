@@ -35,7 +35,7 @@ export function DataTableToolbar<TData>({
   };
 
   return (
-    <div className="flex flex-wrap items-center justify-between relative ">
+    <div className="flex flex-wrap flex-col sm:flex-row sm:items-center gap-2 justify-between relative ">
       <div className="flex flex-1 flex-wrap items-center gap-2">
         <Input
           placeholder="Search titles..."
