@@ -27,7 +27,7 @@ export default async function Page() {
   console.log("data", data);
 
   return (
-    <div className="h-full max-w-[1140px] mx-auto flex-1 flex-col space-y-4 p-8 md:flex ">
+    <div className="h-full max-w-[1140px] mx-auto flex-1 flex-col space-y-4  p-8 md:flex ">
       {/* Breadcrumb Navigation */}
       <div className="flex items-center justify-between space-x-2 text-sm text-muted-foreground px-[40px]">
         <div className="flex items-center space-x-2">
