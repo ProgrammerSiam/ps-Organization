@@ -26,9 +26,11 @@ export default async function Page() {
   console.log("data", data);
 
   return (
-    <div className=" max-w-[1140px] mx-auto flex-1 flex-col space-y-4  p-8 md:flex ">
+
+    <div className="h-full w-full sm:max-w-[1140px] mx-auto flex-1 flex-col space-y-[32px] p-4 sm:p-8 md:flex ">
+
       {/* Breadcrumb Navigation */}
-      <div className="flex items-center justify-between space-x-2 text-sm text-muted-foreground px-[40px]">
+      <div className="flex flex-wrap gap-2 items-center justify-between space-x-2 text-sm text-muted-foreground px-[20px] sm:px-[40px] h-[40px]">
         <div className="flex items-center space-x-2">
           <span className="text-[#818181] text-[14px] leading-[20px] font-normal tracking-[-0.014em] hover:text-foreground cursor-pointer">
             Organization
@@ -46,7 +48,6 @@ export default async function Page() {
               height="16"
               viewBox="0 0 16 16"
               fill="none"
-              // className="mr-[8px]"
             >
               <path
                 fill-rule="evenodd"
@@ -62,8 +63,10 @@ export default async function Page() {
         </Link>
       </div>
 
-      <div className="rounded-[20px] border border-[#E9EAEB] bg-[#FAFAFA]  gap-[4px] p-[4px] ">
-        <div className=" justify-between flex flex-col items-start gap-[2px] px-[20px] py-[8px] self-stretch">
+
+      <div className="rounded-[20px] border border-[#E9EAEB] bg-[#FAFAFA] p-[4px] ">
+        <div className=" justify-between flex flex-col items-start gap-[2px] px-[20px] py-[8px] pb-[14px] self-stretch">
+
           <div>
             <h1 className="text-[#2B2B2B] font-semibold text-[18px] leading-[28px] font-label">
               Members & Invitations
