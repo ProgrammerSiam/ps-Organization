@@ -27,7 +27,7 @@ export default async function Page() {
   console.log("data", data);
 
   return (
-    <div className="h-full max-w-[1140px] mx-auto flex-1 flex-col space-y-4  p-8 md:flex ">
+    <div className=" max-w-[1140px] mx-auto flex-1 flex-col space-y-4  p-8 md:flex ">
       {/* Breadcrumb Navigation */}
       <div className="flex items-center justify-between space-x-2 text-sm text-muted-foreground px-[40px]">
         <div className="flex items-center space-x-2">
@@ -63,7 +63,7 @@ export default async function Page() {
         </Link>
       </div>
 
-      <div className="rounded-[20px]   border border-[#E9EAEB] bg-[#FAFAFA]  gap-[4px] p-[4px] ">
+      <div className="rounded-[20px] border border-[#E9EAEB] bg-[#FAFAFA]  gap-[4px] p-[4px] ">
         <div className=" justify-between flex flex-col items-start gap-[2px] px-[20px] py-[8px] self-stretch">
           <div>
             <h1 className="text-[#2B2B2B] font-semibold text-[18px] leading-[28px] font-label">

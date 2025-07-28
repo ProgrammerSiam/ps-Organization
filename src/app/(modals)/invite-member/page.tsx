@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import FolderPermissionsModal from "@/components/comp-567";
 
 // Define PermissionItem and LibraryPermissions types
 interface PermissionItem {
@@ -49,7 +50,7 @@ interface PermissionItem {
 interface LibraryPermissions {
   id: string;
   name: string;
-  accessType: "Custom Access" | "Full Access";
+  accessType?: "Custom Access" | "Full Access";
   selected: boolean;
   expanded: boolean;
   permissions: PermissionItem[];
@@ -128,7 +129,7 @@ export default function InviteMemberModal() {
     {
       id: "echo-media",
       name: "Echo Media",
-      accessType: "Full Access",
+      accessType: "Custom Access",
       selected: true,
       expanded: false,
       permissions: [],
@@ -136,7 +137,6 @@ export default function InviteMemberModal() {
     {
       id: "pinnacle-reports",
       name: "Pinnacle Reports",
-      accessType: "Custom Access",
       selected: false,
       expanded: false,
       permissions: [],
@@ -146,6 +146,9 @@ export default function InviteMemberModal() {
   const [accessLevel, setAccessLevel] = useState<
     "View" | "View and Edit" | "Edit and Delete"
   >("View");
+
+  // State for Folder Permissions modal
+  const [isFolderPermissionsOpen, setIsFolderPermissionsOpen] = useState(false);
 
   const toggleLibraryExpansion = (libraryId: string) => {
     setLibraries((prev) =>
@@ -198,7 +201,7 @@ export default function InviteMemberModal() {
 
   return (
     <Dialog open onOpenChange={() => router.back()}>
-      <DialogContent className=" max-w-full ">
+      <DialogContent className=" max-w-full h-screen">
         <div className="flex items-center gap-[12px]">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -219,11 +222,11 @@ export default function InviteMemberModal() {
             Invite Member
           </span>
         </div>
-        <div className="flex flex-col items-center h-[709px] py-5 gap-5 flex-shrink-0 self-stretch rounded-[20px] bg-white shadow-[inset_0_2px_4px_rgba(0,0,0,0.06)]">
-          <div className="px-6 pb-6">
-            <div className="flex flex-col items-start w-[720px] p-[4px] gap-[4px] rounded-[20px] border border-[#E9EAEB] bg-[#FAFAFA]">
+        <div className="flex flex-col items-center  py-5 gap-5 flex-shrink-0 self-stretch rounded-[20px] bg-white shadow-[inset_0_2px_4px_rgba(0,0,0,0.06)] overflow-hidden">
+          <div className="px-6 pb-6 overflow-y-auto w-full flex-1">
+            <div className="flex flex-col items-start w-full max-w-[720px] mx-auto p-[4px] gap-[4px] rounded-[20px] border border-[#E9EAEB] bg-[#FAFAFA]">
               <DialogHeader>
-                <DialogTitle className="text-base">Invite Member</DialogTitle>
+                <DialogTitle className="">Invite Member</DialogTitle>
                 <DialogDescription>
                   Invite new people to your team via email
                 </DialogDescription>
@@ -234,10 +237,10 @@ export default function InviteMemberModal() {
        shadow-[0_2px_5px_-2px_rgba(10,9,11,0.06),0_2px_7px_0_rgba(10,9,11,0.05),0_0_0_1px_rgba(10,9,11,0.05)]"
               >
                 <div className="flex flex-col items-start gap-[4px]">
-                  <label className="block text-sm font-medium mb-1">
+                  <label className="overflow-hidden text-ellipsis text-[#2B2B2B] text-[14px] font-medium leading-[20px] tracking-[-0.28px] whitespace-nowrap">
                     Invitee Email
                   </label>
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-[#818181] text-[12px] font-normal leading-[18px]">
                     Email of the person to invite
                   </span>
                 </div>
@@ -247,227 +250,135 @@ export default function InviteMemberModal() {
               </div>
             </div>
 
-            <div className="bg-muted rounded-xl p-6">
-              <div className="mb-4">
-                <div className="font-semibold">Permissions</div>
-                <div className="text-sm text-muted-foreground">
+            <div className="flex  w-full max-w-[720px] mx-auto mt-5 p-[4px] flex-col items-start gap-[4px] rounded-[20px] border border-[#E9EAEB] bg-[#FAFAFA]">
+              <div className="mb-4 flex flex-col items-start gap-[2px] p-[8px_20px] self-stretch">
+                <div className="text-[#2B2B2B] text-lg font-semibold leading-[28px]">
+                  Permissions
+                </div>
+                <div className="text-[#818181] text-sm font-normal leading-[20px]">
                   Assign view, edit, or delete rights by area
                 </div>
               </div>
-              <Tabs value={tab} onValueChange={setTab} className="mb-4">
-                <TabsList className="bg-transparent">
-                  <TabsTrigger value="library">Library</TabsTrigger>
-                  <TabsTrigger value="distribution">Distribution</TabsTrigger>
-                  <TabsTrigger value="organization">Organization</TabsTrigger>
+              <Tabs
+                value={tab}
+                onValueChange={setTab}
+                className="mb-4  rounded-[16px] bg-white shadow-[0_2px_5px_-2px_rgba(10,9,11,0.06),0_2px_7px_0_rgba(10,9,11,0.05),0_0_0_1px_rgba(10,9,11,0.05)] flex flex-col justify-end items-start gap-0 self-stretch px-2 py-3"
+              >
+                <TabsList className="bg-gray-100 rounded-lg p-1 border border-gray-200">
+                  <TabsTrigger
+                    value="library"
+                    className="data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=inactive]:text-gray-600 rounded-md px-4 py-2 transition-all duration-200"
+                  >
+                    Library
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="distribution"
+                    className="data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=inactive]:text-gray-600 rounded-md px-4 py-2 transition-all duration-200"
+                  >
+                    Distribution
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="organization"
+                    className="data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=inactive]:text-gray-600 rounded-md px-4 py-2 transition-all duration-200"
+                  >
+                    Organization
+                  </TabsTrigger>
                 </TabsList>
                 <TabsContent value="library">
-                  {/* <div className="mb-4">
-                  <div className="font-medium mb-2">What invitee can do?</div>
-                  <RadioGroup
-                    value={permission}
-                    onValueChange={setPermission}
-                    className="flex gap-6"
-                  >
-                    <div className="flex items-center gap-2">
-                      <RadioGroupItem value="view" id="view" />
-                      <label htmlFor="view">View</label>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <RadioGroupItem value="edit" id="edit" />
-                      <label htmlFor="edit">View and Edit</label>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <RadioGroupItem value="delete" id="delete" />
-                      <label htmlFor="delete">Edit and Delete</label>
-                    </div>
-                  </RadioGroup>
-                </div>
-                <div>
-                  <div className="font-medium mb-2">Select Libraries</div>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between bg-white rounded-lg px-4 py-2 border">
-                      <div className="flex items-center gap-2">
-                        <Checkbox
-                          checked={libraries.nova}
-                          onCheckedChange={(v) =>
-                            setLibraries((l) => ({ ...l, nova: !!v }))
-                          }
-                          id="nova"
-                        />
-                        <label htmlFor="nova" className="font-medium">
-                          Nova Insights
-                        </label>
-                      </div>
-                      <Select
-                        value={access.nova}
-                        onValueChange={(v) =>
-                          setAccess((a) => ({ ...a, nova: v }))
-                        }
-                      >
-                        <SelectTrigger className="w-32">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="custom">Custom Access</SelectItem>
-                          <SelectItem value="full">Full Access</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="flex items-center justify-between bg-white rounded-lg px-4 py-2 border">
-                      <div className="flex items-center gap-2">
-                        <Checkbox
-                          checked={libraries.echo}
-                          onCheckedChange={(v) =>
-                            setLibraries((l) => ({ ...l, echo: !!v }))
-                          }
-                          id="echo"
-                        />
-                        <label htmlFor="echo" className="font-medium">
-                          Echo Media
-                        </label>
-                      </div>
-                      <Select
-                        value={access.echo}
-                        onValueChange={(v) =>
-                          setAccess((a) => ({ ...a, echo: v }))
-                        }
-                      >
-                        <SelectTrigger className="w-32">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="custom">Custom Access</SelectItem>
-                          <SelectItem value="full">Full Access</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="flex items-center justify-between bg-white rounded-lg px-4 py-2 border">
-                      <div className="flex items-center gap-2">
-                        <Checkbox
-                          checked={libraries.pinnacle}
-                          onCheckedChange={(v) =>
-                            setLibraries((l) => ({ ...l, pinnacle: !!v }))
-                          }
-                          id="pinnacle"
-                        />
-                        <label htmlFor="pinnacle" className="font-medium">
-                          Pinnacle Reports
-                        </label>
-                      </div>
-                      <Select
-                        value={access.pinnacle}
-                        onValueChange={(v) =>
-                          setAccess((a) => ({ ...a, pinnacle: v }))
-                        }
-                      >
-                        <SelectTrigger className="w-32">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="custom">Custom Access</SelectItem>
-                          <SelectItem value="full">Full Access</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </div> */}
-                  <div className="max-w-7xl mx-auto p-6">
-                    <div className="bg-white rounded-lg shadow-sm border p-6 space-y-6">
-                      {/* Access Level Selection */}
-                      <div className="space-y-3">
-                        <div className="flex space-x-6">
-                          {(
-                            [
-                              "View",
-                              "View and Edit",
-                              "Edit and Delete",
-                            ] as const
-                          ).map((level) => (
-                            <div
-                              key={level}
-                              className="flex items-center space-x-2"
+                  <div className="space-y-6">
+                    {/* Access Level Selection */}
+                    <div className="space-y-3">
+                      <h2 className="overflow-hidden text-[#2B2B2B] text-ellipsis whitespace-nowrap text-[14px] font-semibold leading-[20px] tracking-[-0.28px]">
+                        What invitee can do?
+                      </h2>
+                      <div className="flex space-x-6">
+                        {(
+                          ["View", "View and Edit", "Edit and Delete"] as const
+                        ).map((level) => (
+                          <div
+                            key={level}
+                            className="flex items-center space-x-2"
+                          >
+                            <input
+                              type="radio"
+                              id={level}
+                              name="accessLevel"
+                              value={level}
+                              checked={accessLevel === level}
+                              onChange={() => setAccessLevel(level)}
+                              className="w-4 h-4 appearance-none rounded-full border-2 transition-all duration-200 checked:bg-teal-600 checked:border-teal-600 border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 relative"
+                            />
+                            <label
+                              htmlFor={level}
+                              className="text-sm font-medium text-gray-900 cursor-pointer"
                             >
-                              <input
-                                type="radio"
-                                id={level}
-                                name="accessLevel"
-                                value={level}
-                                checked={accessLevel === level}
-                                onChange={() => setAccessLevel(level)}
-                                className="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500"
-                              />
-                              <label
-                                htmlFor={level}
-                                className="text-sm font-medium text-gray-700"
-                              >
-                                {level}
-                              </label>
-                            </div>
-                          ))}
-                        </div>
+                              {level}
+                            </label>
+                          </div>
+                        ))}
                       </div>
+                    </div>
 
-                      {/* Libraries Selection */}
-                      <div className="space-y-4">
-                        <h2 className="text-lg font-semibold text-gray-900">
-                          Select Libraries
-                        </h2>
-                        <div className="space-y-2">
-                          {libraries.map((library) => (
-                            <div
-                              key={library.id}
-                              className="border rounded-lg overflow-hidden"
-                            >
-                              {/* Library Header */}
-                              <div className="flex items-center justify-between p-4 bg-white">
-                                <div className="flex items-center space-x-3">
-                                  <Checkbox
-                                    checked={library.selected}
-                                    onCheckedChange={() =>
-                                      toggleLibrarySelection(library.id)
-                                    }
-                                    className="w-4 h-4"
-                                  />
-                                  <span className="font-medium text-gray-900">
-                                    {library.name}
-                                  </span>
-                                  <Badge
-                                    variant="secondary"
-                                    className={cn(
-                                      "text-xs px-2 py-1",
-                                      library.accessType === "Full Access"
-                                        ? "bg-green-100 text-green-800"
-                                        : "bg-blue-100 text-blue-800"
-                                    )}
-                                  >
-                                    {library.accessType}
-                                  </Badge>
-                                </div>
-                                {library.accessType === "Custom Access" && (
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() =>
-                                      toggleLibraryExpansion(library.id)
-                                    }
-                                    className="p-1 h-auto"
-                                  >
-                                    {library.expanded ? (
-                                      <ChevronUpIcon className="w-4 h-4 text-gray-500" />
-                                    ) : (
-                                      <ChevronDownIcon className="w-4 h-4 text-gray-500" />
-                                    )}
-                                  </Button>
-                                )}
+                    {/* Libraries Selection */}
+                    <div className="space-y-4 ">
+                      <h2 className="overflow-hidden  text-[#2B2B2B] text-ellipsis whitespace-nowrap text-[14px] font-semibold leading-[20px] tracking-[-0.28px]">
+                        Select Libraries
+                      </h2>
+                      <div className="space-y-2">
+                        {libraries.map((library) => (
+                          <div
+                            key={library.id}
+                            className="border rounded-lg overflow-hidden"
+                          >
+                            {/* Library Header */}
+                            <div className="flex items-center  justify-between p-4 bg-white">
+                              <div className="flex items-center space-x-3">
+                                <Checkbox
+                                  checked={library.selected}
+                                  onCheckedChange={() =>
+                                    toggleLibrarySelection(library.id)
+                                  }
+                                  className="w-4 h-4"
+                                />
+                                <span className="font-medium text-gray-900">
+                                  {library.name}
+                                </span>
                               </div>
+                              {library.accessType &&
+                                library.accessType === "Custom Access" && (
+                                  <div className="flex items-center gap-2">
+                                    <span
+                                      className={cn(
+                                        "overflow-hidden text-[#4B4B4B] truncate  text-[12px] font-normal leading-[18px]"
+                                      )}
+                                    >
+                                      {library.accessType}
+                                    </span>
 
-                              {/* Expanded Permissions */}
-                              {library.expanded &&
-                                library.permissions.length > 0 && (
-                                  <div className="border-t bg-gray-50 p-4 space-y-6">
-                                    {groupedPermissions(
-                                      library.permissions
-                                    ).map((group) => (
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() =>
+                                        toggleLibraryExpansion(library.id)
+                                      }
+                                      className="p-1 h-auto"
+                                    >
+                                      {library.expanded ? (
+                                        <ChevronUpIcon className="w-4 h-4 text-gray-500" />
+                                      ) : (
+                                        <ChevronDownIcon className="w-4 h-4 text-gray-500" />
+                                      )}
+                                    </Button>
+                                  </div>
+                                )}
+                            </div>
+
+                            {/* Expanded Permissions */}
+                            {library.expanded &&
+                              library.permissions.length > 0 && (
+                                <div className="border-t bg-gray-50 p-4 space-y-6">
+                                  {groupedPermissions(library.permissions).map(
+                                    (group) => (
                                       <div
                                         key={group.name}
                                         className="space-y-3"
@@ -480,56 +391,61 @@ export default function InviteMemberModal() {
                                             (permission) => (
                                               <div
                                                 key={permission.id}
-                                                className="flex items-center justify-between p-3 bg-white rounded-md border border-gray-200"
+                                                className="flex items-center p-3 bg-white rounded-md border border-[#E9EAEB]"
+                                                style={{
+                                                  boxShadow:
+                                                    "0 1.5px 4px -1px rgba(10,9,11,0.07)",
+                                                }}
                                               >
-                                                <div className="flex items-center space-x-3">
-                                                  <div className="w-8 h-8 bg-green-100 rounded-md flex items-center justify-center">
-                                                    <permission.icon className="w-4 h-4 text-green-600" />
+                                                <div className="flex items-center space-x-3 flex-1">
+                                                  <div className="w-8 h-8 bg-[#E6F6F2] rounded-md flex items-center justify-center">
+                                                    <permission.icon className="w-4 h-4 text-[#13B176]" />
                                                   </div>
-                                                  <div>
-                                                    <div className="font-medium text-sm text-gray-900">
+                                                  <div className="flex flex-col gap-0.5 flex-1">
+                                                    <div className="font-medium text-sm text-[#2B2B2B] flex items-center gap-2">
                                                       {permission.name}
+                                                      {permission.id ===
+                                                        "videos" && (
+                                                        <span
+                                                          className="text-xs text-[#13B176] hover:underline cursor-pointer font-medium ml-2"
+                                                          onClick={() =>
+                                                            setIsFolderPermissionsOpen(
+                                                              true
+                                                            )
+                                                          }
+                                                        >
+                                                          Change
+                                                        </span>
+                                                      )}
                                                     </div>
-                                                    <div className="text-xs text-gray-500">
+                                                    <div className="text-xs text-[#818181]">
                                                       {permission.description}
                                                     </div>
                                                   </div>
                                                 </div>
-                                                <div className="flex items-center space-x-3">
-                                                  <span className="text-xs text-green-600 hover:underline cursor-pointer font-medium">
-                                                    Change
-                                                  </span>
-                                                  <div className="relative">
-                                                    <input
-                                                      type="checkbox"
-                                                      checked={
-                                                        permission.enabled
-                                                      }
-                                                      onChange={() =>
-                                                        togglePermission(
-                                                          library.id,
-                                                          permission.id
-                                                        )
-                                                      }
-                                                      className="sr-only"
-                                                    />
+                                                <div className="flex items-center justify-end min-w-[44px]">
+                                                  <div
+                                                    className={cn(
+                                                      "w-11 h-6 rounded-full transition-colors duration-200 ease-in-out cursor-pointer relative border border-[#E9EAEB]",
+                                                      permission.enabled
+                                                        ? "bg-[#13B176]"
+                                                        : "bg-[#E9EAEB]"
+                                                    )}
+                                                    onClick={() =>
+                                                      togglePermission(
+                                                        library.id,
+                                                        permission.id
+                                                      )
+                                                    }
+                                                  >
                                                     <div
                                                       className={cn(
-                                                        "w-11 h-6 rounded-full transition-colors duration-200 ease-in-out cursor-pointer relative",
+                                                        "absolute w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out top-0.5 border border-[#E9EAEB]",
                                                         permission.enabled
-                                                          ? "bg-green-500"
-                                                          : "bg-gray-300"
+                                                          ? "translate-x-6"
+                                                          : "translate-x-0"
                                                       )}
-                                                    >
-                                                      <div
-                                                        className={cn(
-                                                          "absolute w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out top-0.5",
-                                                          permission.enabled
-                                                            ? "translate-x-6"
-                                                            : "translate-x-0"
-                                                        )}
-                                                      />
-                                                    </div>
+                                                    />
                                                   </div>
                                                 </div>
                                               </div>
@@ -537,12 +453,12 @@ export default function InviteMemberModal() {
                                           )}
                                         </div>
                                       </div>
-                                    ))}
-                                  </div>
-                                )}
-                            </div>
-                          ))}
-                        </div>
+                                    )
+                                  )}
+                                </div>
+                              )}
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -562,6 +478,11 @@ export default function InviteMemberModal() {
           </div>
         </div>
       </DialogContent>
+      {/* Render Folder Permissions Modal */}
+      <FolderPermissionsModal
+        isOpen={isFolderPermissionsOpen}
+        onOpenChange={setIsFolderPermissionsOpen}
+      />
     </Dialog>
   );
 }

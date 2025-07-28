@@ -136,21 +136,13 @@ export default function FolderPermissionsModal({
         <DialogHeader className="px-6 pt-6 pb-4">
           <div className="flex items-start justify-between">
             <div className="flex-1">
-              <DialogTitle className="text-xl font-semibold text-gray-900 mb-1">
+              <DialogTitle className="text-[#2B2B2B]  text-[18px] font-semibold leading-[28px] mb-1">
                 Folder Permissions
               </DialogTitle>
-              <p className="text-sm text-gray-600">
+              <p className="text-[#4B4B4B]  text-[14px] font-normal leading-[20px] tracking-[-0.14px]">
                 Select which folders this member can access
               </p>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onOpenChange(false)}
-              className="h-8 w-8 p-0 hover:bg-gray-100"
-            >
-              <X className="h-4 w-4 text-gray-500" />
-            </Button>
           </div>
         </DialogHeader>
 
