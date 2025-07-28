@@ -39,11 +39,27 @@ const folderData: FolderItem[] = [
     id: "mystery-novels",
     name: "Mystery Novels",
     count: 57,
-    children: ["travel-guides", "graphic-novels", "cookbooks"],
+    children: [
+      "travel-guides",
+      "graphic-novels",
+      "cookbooks",
+      "thriller-books",
+      "detective-stories",
+    ],
   },
-  { id: "travel-guides", name: "Travel Guides", count: 19 },
+  {
+    id: "travel-guides",
+    name: "Travel Guides",
+    count: 19,
+    children: ["europe-guides", "asia-guides", "america-guides"],
+  },
+  { id: "europe-guides", name: "Europe Guides", count: 8 },
+  { id: "asia-guides", name: "Asia Guides", count: 6 },
+  { id: "america-guides", name: "America Guides", count: 5 },
   { id: "graphic-novels", name: "Graphic Novels", count: 76 },
   { id: "cookbooks", name: "Cookbooks", count: 33 },
+  { id: "thriller-books", name: "Thriller Books", count: 45 },
+  { id: "detective-stories", name: "Detective Stories", count: 28 },
   { id: "childrens-literature", name: "Children's Literature", count: 11 },
   { id: "history-archives", name: "History Archives", count: 0 },
   { id: "poetry-collection", name: "Poetry Collection", count: 5 },
@@ -191,6 +207,16 @@ export default function FolderPermissionsModal({
               const isExpanded = expandedItems.has(folder.id);
               const isHighlighted = folder.id === "mystery-novels";
 
+              // Calculate tree line positions
+              const baseIndent = 16;
+              const levelIndent = 24;
+              const lineColor = "#D1D5DB"; // gray-300
+
+              // Calculate positions for tree lines
+              const itemIndent = baseIndent + folder.level * levelIndent;
+              const lineStartX = itemIndent - 12; // Start line 12px before the item
+              const horizontalLineWidth = 8; // Width of horizontal line
+
               // Check if this item has siblings below it at the same level
               const hasSiblingsBelow = (() => {
                 const currentLevel = folder.level;
@@ -230,53 +256,109 @@ export default function FolderPermissionsModal({
                 return true; // This is the last child
               })();
 
-              // Calculate line positions to match reference image exactly
-              const baseIndent = 12;
-              const levelIndent = 20;
-              const checkboxWidth = 16;
-              const gap = 12;
+              // Check if this is the first child of its parent
+              const isFirstChild = (() => {
+                if (folder.level === 0) return false;
 
-              // Parent folder center position (where vertical line starts)
-              const parentCenterLeft = baseIndent + checkboxWidth + gap + 8; // 8px is half of icon width
+                const currentParent = folder.parentId;
+                for (let i = index - 1; i >= 0; i--) {
+                  const prevItem = filteredFolders[i];
+                  if (prevItem.parentId === currentParent) {
+                    return false; // There's a sibling above
+                  }
+                  if (prevItem.level < folder.level) break; // We've moved up a level
+                }
+                return true; // This is the first child
+              })();
 
-              // Child checkbox left edge position
-              const childCheckboxLeft = baseIndent + folder.level * levelIndent;
+              // Check if this item has visible children below it
+              const hasVisibleChildrenBelow = (() => {
+                if (!hasChildren || !isExpanded) return false;
 
-              // Vertical line position (middle of indentation space)
-              const verticalLineLeft = childCheckboxLeft - 10; // 10px left of child checkbox
-
-              // Horizontal line position (from vertical line to child checkbox)
-              const horizontalLineLeft = verticalLineLeft;
-              const horizontalLineWidth = 10; // Distance from vertical line to child checkbox
+                for (let i = index + 1; i < filteredFolders.length; i++) {
+                  const nextItem = filteredFolders[i];
+                  if (nextItem.level <= folder.level) break; // We've moved up or to same level
+                  if (nextItem.parentId === folder.id) return true; // Found a direct child
+                }
+                return false;
+              })();
 
               return (
                 <div key={folder.id} className="relative">
                   {/* Vertical line for parent folders with visible children */}
                   {isParentWithVisibleChildren && (
                     <div
-                      className="absolute top-0 bottom-0 w-px bg-gray-300"
+                      className="absolute w-px"
                       style={{
-                        left: `${verticalLineLeft}px`,
-                        height: isLastChild ? "50%" : "100%", // Stop at middle of last child
+                        left: `${lineStartX}px`,
+                        top: "40px", // Start below the parent item
+                        bottom: isLastChild ? "20px" : "0px", // Stop at middle of last child
+                        backgroundColor: lineColor,
                       }}
                     ></div>
                   )}
 
                   {/* Vertical line for items with siblings below */}
-                  {hasSiblingsBelow && (
+                  {hasSiblingsBelow && folder.level > 0 && (
                     <div
-                      className="absolute top-0 bottom-0 w-px bg-gray-300"
-                      style={{ left: `${verticalLineLeft}px` }}
+                      className="absolute w-px"
+                      style={{
+                        left: `${lineStartX}px`,
+                        top: "0px",
+                        bottom: "0px",
+                        backgroundColor: lineColor,
+                      }}
+                    ></div>
+                  )}
+
+                  {/* Vertical line for items that are not the last child */}
+                  {folder.level > 0 && !isLastChild && (
+                    <div
+                      className="absolute w-px"
+                      style={{
+                        left: `${lineStartX}px`,
+                        top: "20px", // Start from middle of current item
+                        bottom: "0px", // Extend to bottom
+                        backgroundColor: lineColor,
+                      }}
+                    ></div>
+                  )}
+
+                  {/* Vertical line for items that are not the first child */}
+                  {folder.level > 0 && !isFirstChild && (
+                    <div
+                      className="absolute w-px"
+                      style={{
+                        left: `${lineStartX}px`,
+                        top: "0px", // Start from top
+                        bottom: "20px", // Stop at middle of current item
+                        backgroundColor: lineColor,
+                      }}
+                    ></div>
+                  )}
+
+                  {/* Additional vertical line for parent folders with visible children at any level */}
+                  {hasVisibleChildrenBelow && (
+                    <div
+                      className="absolute w-px"
+                      style={{
+                        left: `${lineStartX}px`,
+                        top: "40px", // Start below the parent item
+                        bottom: "0px", // Extend to bottom
+                        backgroundColor: lineColor,
+                      }}
                     ></div>
                   )}
 
                   {/* Horizontal line connecting child to parent */}
                   {folder.level > 0 && (
                     <div
-                      className="absolute top-1/2 transform -translate-y-1/2 h-px bg-gray-300"
+                      className="absolute h-px"
                       style={{
-                        left: `${horizontalLineLeft}px`,
+                        left: `${lineStartX}px`,
+                        top: "20px", // Middle of the item
                         width: `${horizontalLineWidth}px`,
+                        backgroundColor: lineColor,
                       }}
                     ></div>
                   )}
@@ -286,9 +368,7 @@ export default function FolderPermissionsModal({
                       isHighlighted ? "bg-gray-100" : ""
                     }`}
                     style={{
-                      paddingLeft: `${
-                        baseIndent + folder.level * levelIndent
-                      }px`,
+                      paddingLeft: `${itemIndent}px`,
                     }}
                     onClick={() => handleExpandToggle(folder.id)}
                   >
