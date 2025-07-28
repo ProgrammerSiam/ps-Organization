@@ -1,0 +1,66 @@
+[
+  {
+    "id": "1",
+    "name": "Alexandra Smith",
+    "email": "alex.smith@company.com",
+    "role": "Owner",
+    "status": "Joined",
+    "date": "2025-04-22"
+  },
+  {
+    "id": "2",
+    "name": "Bob Smith",
+    "email": "john.smith@business.org",
+    "role": "Owner",
+    "status": "Joined",
+    "date": "2025-11-30"
+  },
+  {
+    "id": "3",
+    "name": "Eva Green",
+    "email": "charlie.white@firm.com",
+    "role": "Member",
+    "status": "Joined",
+    "date": "2025-05-12"
+  },
+  {
+    "id": "4",
+    "name": "Henry Adams",
+    "email": "fiona.blue@company.com",
+    "role": "Member",
+    "status": "Joined",
+    "date": "2025-12-01"
+  },
+  {
+    "id": "5",
+    "name": "Katherine Wilson",
+    "email": "irene.yellow@startup.co",
+    "role": "Member",
+    "status": "Joined",
+    "date": "2025-09-27"
+  },
+  {
+    "id": "6",
+    "name": "Noah Martinez",
+    "email": "leo.gray@agency.net",
+    "role": "Member",
+    "status": "Pending",
+    "date": "2025-06-30"
+  },
+  {
+    "id": "7",
+    "name": "Quinn Lewis",
+    "email": "oliver.white@enterprise.net",
+    "role": "Member",
+    "status": "Pending",
+    "date": "2025-11-08"
+  },
+  {
+    "id": "8",
+    "name": "Tina Scott",
+    "email": "rachel.blue@corporation.org",
+    "role": "Member",
+    "status": "Pending",
+    "date": "2025-04-19"
+  }
+]
