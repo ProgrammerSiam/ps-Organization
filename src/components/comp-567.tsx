@@ -51,7 +51,7 @@ const folderData: FolderItem[] = [
     id: "travel-guides",
     name: "Travel Guides",
     count: 19,
-    children: ["europe-guides", "asia-guides", "america-guides"],
+    // children: ["europe-guides", "asia-guides", "america-guides"],
   },
   { id: "europe-guides", name: "Europe Guides", count: 8 },
   { id: "asia-guides", name: "Asia Guides", count: 6 },
@@ -80,6 +80,7 @@ export default function FolderPermissionsModal({
   const [expandedItems, setExpandedItems] = useState<Set<string>>(
     new Set(["mystery-novels"])
   );
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   // Flatten the folder structure for display
   const flattenedFolders = useMemo(() => {
@@ -142,6 +143,23 @@ export default function FolderPermissionsModal({
       newExpanded.add(itemId);
     }
     setExpandedItems(newExpanded);
+  };
+
+  const handleCollapseAll = () => {
+    setIsCollapsed(!isCollapsed);
+    if (!isCollapsed) {
+      // Collapse all items
+      setExpandedItems(new Set());
+    } else {
+      // Expand all items that have children
+      const itemsWithChildren = new Set<string>();
+      folderData.forEach((folder) => {
+        if (folder.children && folder.children.length > 0) {
+          itemsWithChildren.add(folder.id);
+        }
+      });
+      setExpandedItems(itemsWithChildren);
+    }
   };
 
   const selectedCount = selectedItems.size;
@@ -207,6 +225,8 @@ export default function FolderPermissionsModal({
               variant="outline"
               size="sm"
               className="h-9 px-3 border-gray-300 hover:bg-gray-50"
+              onClick={handleCollapseAll}
+              title={isCollapsed ? "Expand All" : "Collapse All"}
             >
               {/* <List className="h-4 w-4 text-gray-500" /> */}
               <svg
@@ -258,7 +278,10 @@ export default function FolderPermissionsModal({
               // Calculate positions for tree lines
               const itemIndent = baseIndent + folder.level * levelIndent;
               const lineStartX = itemIndent - 12; // Start line 12px before the item
-              const horizontalLineWidth = 8; // Width of horizontal line
+              const horizontalLineWidth = 12; // Width of horizontal line - increased for better connection
+              const lineThickness = "1px"; // Ensure consistent line thickness
+              const verticalLineX = lineStartX; // Vertical line position
+              const horizontalLineX = lineStartX; // Horizontal line starts at same position as vertical
 
               // Check if this item has siblings below it at the same level
               const hasSiblingsBelow = (() => {
@@ -299,6 +322,21 @@ export default function FolderPermissionsModal({
                 return true; // This is the last child
               })();
 
+              // Check if this is the last visible child of its parent
+              const isLastVisibleChild = (() => {
+                if (folder.level === 0) return false;
+
+                const currentParent = folder.parentId;
+                for (let i = index + 1; i < filteredFolders.length; i++) {
+                  const nextItem = filteredFolders[i];
+                  if (nextItem.parentId === currentParent) {
+                    return false; // There's another sibling
+                  }
+                  if (nextItem.level <= folder.level) break; // We've moved up or to same level
+                }
+                return true; // This is the last visible child
+              })();
+
               // Check if this is the first child of its parent
               const isFirstChild = (() => {
                 if (folder.level === 0) return false;
@@ -326,82 +364,106 @@ export default function FolderPermissionsModal({
                 return false;
               })();
 
+              // Check if this is a middle child (not first, not last)
+              const isMiddleChild =
+                folder.level > 0 && !isFirstChild && !isLastVisibleChild;
+
               return (
                 <div key={folder.id} className="relative">
-                  {/* Vertical line for parent folders with visible children */}
+                  {/* Main vertical line for parent with children */}
                   {isParentWithVisibleChildren && (
                     <div
-                      className="absolute w-px"
+                      className="absolute"
                       style={{
-                        left: `${lineStartX}px`,
+                        left: `${verticalLineX}px`,
                         top: "40px", // Start below the parent item
-                        bottom: isLastChild ? "20px" : "0px", // Stop at middle of last child
+                        bottom: "0px", // Extend all the way to bottom
+                        width: lineThickness,
                         backgroundColor: lineColor,
+                        zIndex: 1,
                       }}
                     ></div>
                   )}
 
-                  {/* Vertical line for items with siblings below */}
-                  {hasSiblingsBelow && folder.level > 0 && (
+                  {/* Vertical line for items with siblings below (not parents) */}
+                  {hasSiblingsBelow &&
+                    folder.level > 0 &&
+                    !isParentWithVisibleChildren && (
+                      <div
+                        className="absolute"
+                        style={{
+                          left: `${verticalLineX}px`,
+                          top: "0px",
+                          bottom: "0px",
+                          width: lineThickness,
+                          backgroundColor: lineColor,
+                          zIndex: 1,
+                        }}
+                      ></div>
+                    )}
+
+                  {/* Vertical line for middle children */}
+                  {isMiddleChild && (
                     <div
-                      className="absolute w-px"
+                      className="absolute"
                       style={{
-                        left: `${lineStartX}px`,
+                        left: `${verticalLineX}px`,
                         top: "0px",
                         bottom: "0px",
+                        width: lineThickness,
                         backgroundColor: lineColor,
+                        zIndex: 1,
                       }}
                     ></div>
                   )}
 
-                  {/* Vertical line for items that are not the last child */}
-                  {folder.level > 0 && !isLastChild && (
-                    <div
-                      className="absolute w-px"
-                      style={{
-                        left: `${lineStartX}px`,
-                        top: "20px", // Start from middle of current item
-                        bottom: "0px", // Extend to bottom
-                        backgroundColor: lineColor,
-                      }}
-                    ></div>
-                  )}
+                  {/* Vertical line for first child (extends from top to middle) */}
+                  {folder.level > 0 &&
+                    isFirstChild &&
+                    !isLastVisibleChild &&
+                    !isParentWithVisibleChildren && (
+                      <div
+                        className="absolute"
+                        style={{
+                          left: `${verticalLineX}px`,
+                          top: "0px",
+                          bottom: "20px",
+                          width: lineThickness,
+                          backgroundColor: lineColor,
+                          zIndex: 1,
+                        }}
+                      ></div>
+                    )}
 
-                  {/* Vertical line for items that are not the first child */}
-                  {folder.level > 0 && !isFirstChild && (
-                    <div
-                      className="absolute w-px"
-                      style={{
-                        left: `${lineStartX}px`,
-                        top: "0px", // Start from top
-                        bottom: "20px", // Stop at middle of current item
-                        backgroundColor: lineColor,
-                      }}
-                    ></div>
-                  )}
-
-                  {/* Additional vertical line for parent folders with visible children at any level */}
-                  {hasVisibleChildrenBelow && (
-                    <div
-                      className="absolute w-px"
-                      style={{
-                        left: `${lineStartX}px`,
-                        top: "40px", // Start below the parent item
-                        bottom: "0px", // Extend to bottom
-                        backgroundColor: lineColor,
-                      }}
-                    ></div>
-                  )}
+                  {/* Vertical line for last child (extends from middle to bottom) */}
+                  {folder.level > 0 &&
+                    isLastVisibleChild &&
+                    !isFirstChild &&
+                    !isParentWithVisibleChildren && (
+                      <div
+                        className="absolute"
+                        style={{
+                          left: `${verticalLineX}px`,
+                          top: "0px",
+                          bottom: "16px", // Extend to bottom
+                          width: lineThickness,
+                          backgroundColor: lineColor,
+                          zIndex: 1,
+                        }}
+                      ></div>
+                    )}
 
                   {/* Horizontal line connecting child to parent */}
                   {folder.level > 0 && (
                     <div
-                      className="absolute h-px"
+                      className="absolute"
                       style={{
-                        left: `${lineStartX}px`,
+                        left: `${horizontalLineX}px`,
                         top: "20px", // Middle of the item
                         width: `${horizontalLineWidth}px`,
+                        height: lineThickness,
                         backgroundColor: lineColor,
+                        zIndex: 2,
                       }}
                     ></div>
                   )}
